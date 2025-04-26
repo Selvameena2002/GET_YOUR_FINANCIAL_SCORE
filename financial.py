@@ -1,4 +1,15 @@
-pip install scikit-learn
+import subprocess
+import sys
+
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+for package in ['scikit-learn', 'pandas', 'matplotlib', 'seaborn', 'streamlit']:
+    try:
+        __import__(package.replace("-", "_"))
+    except ImportError:
+        install(package)
+
 import streamlit as st
 import pandas as pd
 from sklearn.model_selection import train_test_split
