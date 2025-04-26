@@ -1,5 +1,10 @@
+pip install scikit-learn
 import streamlit as st
 import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import mean_absolute_error, r2_score
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -36,7 +41,11 @@ with tab2:
         product_name_mapping = {}
 
         for col in categorical_columns:
-        
+            label_encoders[col] = LabelEncoder()
+            data[col] = label_encoders[col].fit_transform(data[col])
+            if col == 'Product_Name':
+                product_name_mapping = dict(zip(data[col], label_encoders[col].classes_))
+
         st.session_state.product_name_mapping = product_name_mapping
 
         X = data.iloc[:, :4]  
